@@ -9,13 +9,13 @@ class Base(DeclarativeBase):
     pass
 
 
-url = settings.db.DATABASE_URL_asyncpg
+url = settings.DATABASE_URL_asyncpg
 async_engine = create_async_engine(url)
-async_session_maker = async_sessionmaker(async_engine, expire_on_commit=False)
+new_session = async_sessionmaker(async_engine, expire_on_commit=False)
 
 
 async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
-    async with async_session_maker() as session:
+    async with new_session() as session:
         yield session
 
 db_dependency = Annotated[AsyncSession, Depends(get_async_session)]

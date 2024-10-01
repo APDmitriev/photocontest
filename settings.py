@@ -1,23 +1,22 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from pydantic import BaseModel
 from sqlalchemy import URL
 
 
 class DbSettings(BaseSettings):
-    db_host: str
-    db_port: int
-    db_user: str
-    db_pass: str
-    db_name: str
+    DB_HOST: str
+    DB_PORT: int
+    DB_USER: str
+    DB_PASS: str
+    DB_NAME: str
 
     @property
     def DATABASE_URL_asyncpg(self):
         return URL.create('postgresql+asyncpg',
-                          username=self.db_user,
-                          password=self.db_pass,
-                          host=self.db_host,
-                          port=self.db_port,
-                          database=self.db_name)
+                          username=self.DB_USER,
+                          password=self.DB_PASS,
+                          host=self.DB_HOST,
+                          port=self.DB_PORT,
+                          database=self.DB_NAME)
 
     model_config = SettingsConfigDict(env_file='.env', case_sensitive=False)
 
